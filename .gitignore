@@ -1,0 +1,38 @@
+# macOS
+.DS_Store
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.key
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+
+# Build and package output
+build/
+dist/
+*.egg-info/
+
+# Local runtime and evaluation output
+logs/
+traces/
+eval_results/
