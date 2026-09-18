@@ -4,8 +4,6 @@ import asyncio
 import random
 import uuid
 
-from pydantic import BaseModel
-
 from agents import (
     Agent,
     HandoffOutputItem,
@@ -18,97 +16,17 @@ from agents import (
     TResponseInputItem,
     handoff,
     trace,
-    set_default_openai_client,
-    set_default_openai_api,
-    set_tracing_disabled,
 )
-from agents.decorators import tool
+
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
-from auto_model import confirm_with_fallback, input_with_fallback, is_auto_mode
-
-from openai import AsyncOpenAI
-import os
-
-deepseek_client = AsyncOpenAI(
-    api_key= os.environ["DEEPSEEK_API_KEY"],
-    base_url="https://api.deepseek.com",
-)
-
-set_default_openai_client(deepseek_client) # 设置默认的OpenAI客户端为DeepSeek
-set_default_openai_api("chat_completions") # 设置默认的OpenAI API为聊天补全
-set_tracing_disabled(True) # 禁用跟踪以避免在DeepSeek中记录敏感信息
-
+from evolving_agent.auto_model import input_with_fallback, is_auto_mode
 ### CONTEXT
-
-
-class AirlineAgentContext(BaseModel):
-    passenger_name: str | None = None
-    confirmation_number: str | None = None
-    seat_number: str | None = None
-    flight_number: str | None = None
-
+from evolving_agent.models.simple_model import AirlineAgentContext
+from evolving_agent.shared.config import MODEL_NAME
 
 ### TOOLS
-
-
-@tool(name_override="faq_lookup_tool", description_override="Lookup frequently asked questions.")
-async def faq_lookup_tool(question: str) -> str:
-    """
-    查找航空公司相关的常见问题。
-
-    Args:
-        question: 客户提出的问题。
-    Returns:
-        对问题的答案，如果无法回答，则返回默认消息。
-    """
-    question_lower = question.lower()
-    if any(
-        keyword in question_lower
-        for keyword in ["bag", "baggage", "luggage", "carry-on", "hand luggage", "hand carry", "行李", "随身行李", "手提行李", "托运行李"]
-    ):
-        return (
-            "您可以携带一件行李上飞机。 "
-            "它必须在50磅以下，尺寸为22英寸 x 14英寸 x 9英寸。"
-        )
-    elif any(keyword in question_lower for keyword in ["seat", "seats", "seating", "plane","座位", "飞机", "座位安排", "座位分配", "座位选择"]):
-        return (
-            "飞机上有120个座位。"
-            "有22个商务舱座位和98个经济舱座位。 "
-            "出口座位是第4排和第16排。 "
-            "第5排到第8排是经济PLUS，有额外的腿部空间。 "
-        )
-    elif any(
-        keyword in question_lower
-        for keyword in ["wifi", "internet", "wireless", "connectivity", "network", "online", "网络", "无线", "连接", "上网"]
-    ):
-        return "飞机上有免费WiFi，请连接 Airline-Wifi"
-    return "抱歉，我不知道这个问题的答案。"
-
-
-@tool
-async def update_seat(
-    context: RunContextWrapper[AirlineAgentContext], confirmation_number: str, new_seat: str
-) -> str:
-    """
-    更新指定确认号码的座位。
-
-    参数：
-        confirmation_number: 航班的确认号码。
-        new_seat: 要更新到的新座位。
-
-    Update the seat for a given confirmation number.
-
-    Args:
-        confirmation_number: The confirmation number for the flight.
-        new_seat: The new seat to update to.
-    """
-    # Update the context based on the customer's input
-    context.context.confirmation_number = confirmation_number
-    context.context.seat_number = new_seat
-    # Ensure that the flight number has been set by the incoming handoff
-    assert context.context.flight_number is not None, "Flight number is required"
-    return f"Updated seat to {new_seat} for confirmation number {confirmation_number}"
-
+from evolving_agent.agent_runtime.tools.booking import update_seat
+from evolving_agent.agent_runtime.tools.faq import faq_lookup_tool
 
 ### HOOKS
 
@@ -124,7 +42,7 @@ async def on_seat_booking_handoff(context: RunContextWrapper[AirlineAgentContext
 
 faq_agent = Agent[AirlineAgentContext](
     name="FAQ Agent",
-    model="deepseek-flash",
+    model=MODEL_NAME,
     handoff_description="A helpful agent that can answer questions about the airline.",
     # handoff_description="一个可以回答航空公司相关问题的有帮助的智能体。",
     instructions=f"""{RECOMMENDED_PROMPT_PREFIX}
@@ -146,7 +64,7 @@ faq_agent = Agent[AirlineAgentContext](
 
 seat_booking_agent = Agent[AirlineAgentContext](
     name="Seat Booking Agent",
-    model="deepseek-flash",
+    model=MODEL_NAME,
     handoff_description="A helpful agent that can update a seat on a flight.",
     # handoff_description="一个可以更新航班座位的有帮助的智能体。",
     instructions=f"""{RECOMMENDED_PROMPT_PREFIX}
@@ -170,7 +88,7 @@ seat_booking_agent = Agent[AirlineAgentContext](
 
 triage_agent = Agent[AirlineAgentContext](
     name="Triage Agent",
-    model="deepseek-flash",
+    model=MODEL_NAME,
     handoff_description="A triage agent that can delegate a customer's request to the appropriate agent.",
     # handoff_description="一个分诊智能体，可以将客户的请求委派给合适的智能体。",
     instructions=(
