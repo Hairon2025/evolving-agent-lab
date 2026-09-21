@@ -1,7 +1,7 @@
 from agents import RunContextWrapper
 from agents.decorators import tool
 
-from evolving_agent.models.simple_model import AirlineAgentContext
+from evolving_agent.agent_runtime.context import AirlineAgentContext
 
 
 @tool
