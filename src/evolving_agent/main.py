@@ -17,7 +17,7 @@ from agents import (
 
 from evolving_agent.auto_model import input_with_fallback, is_auto_mode
 ### CONTEXT
-from evolving_agent.models.simple_model import AirlineAgentContext
+from evolving_agent.agent_runtime.context import AirlineAgentContext
 
 ### AGENTS
 from evolving_agent.agent_runtime.agents.factory import (

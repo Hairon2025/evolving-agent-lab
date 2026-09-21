@@ -2,8 +2,7 @@ import random
 
 from agents import RunContextWrapper
 
-from evolving_agent.models.simple_model import AirlineAgentContext
-
+from evolving_agent.agent_runtime.context import AirlineAgentContext
 
 async def on_seat_booking_handoff(
     context: RunContextWrapper[AirlineAgentContext],

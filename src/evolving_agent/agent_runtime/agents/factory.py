@@ -15,7 +15,7 @@ from evolving_agent.agent_runtime.agents.prompts import (
 )
 from evolving_agent.agent_runtime.tools.booking import update_seat
 from evolving_agent.agent_runtime.tools.faq import faq_lookup_tool
-from evolving_agent.models.simple_model import AirlineAgentContext
+from evolving_agent.agent_runtime.context import AirlineAgentContext
 from evolving_agent.shared.config import MODEL_NAME
 
 
