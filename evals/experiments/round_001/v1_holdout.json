@@ -1,0 +1,45 @@
+{
+  "prompt_version": "v1",
+  "split": "holdout",
+  "passed": 5,
+  "failed": 0,
+  "unknown": 0,
+  "total": 5,
+  "cases": [
+    {
+      "id": "wifi_paraphrase",
+      "expected": "FAQ Agent",
+      "actual": "FAQ Agent",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "seat_paraphrase",
+      "expected": "Seat Booking Agent",
+      "actual": "Seat Booking Agent",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "greeting_paraphrase",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "unsupported_rebooking",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "unsupported_payment",
+      "expected": null,
+      "actual": null,
+      "passed": true,
+      "error": null
+    }
+  ]
+}

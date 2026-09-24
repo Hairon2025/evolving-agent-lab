@@ -29,7 +29,7 @@ class AgentRegistry:
     seat_booking: Agent[AirlineAgentContext]
 
 
-def build_agent_registry() -> AgentRegistry:
+def build_agent_registry(triage_instructions: str = TRIAGE_INSTRUCTIONS) -> AgentRegistry:
     """
     构建并返回三个 Agent 的注册表。
 
@@ -69,7 +69,7 @@ def build_agent_registry() -> AgentRegistry:
         handoff_description=(
             "Routes customer requests to the appropriate agent."
         ),
-        instructions=TRIAGE_INSTRUCTIONS,
+        instructions=triage_instructions,
         # handoffs 是分诊 Agent 的出边：根据用户意图转给下游 Agent
         handoffs=[
             # 转接到 FAQ Agent

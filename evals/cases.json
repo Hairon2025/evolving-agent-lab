@@ -1,0 +1,98 @@
+[
+  {
+    "id": "wifi",
+    "split": "development",
+    "input": "飞机上有 Wi-Fi 吗？",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "baggage",
+    "split": "development",
+    "input": "随身行李有什么限制？",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "seat_map",
+    "split": "development",
+    "input": "经济舱有多少座位？",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "change_seat",
+    "split": "development",
+    "input": "我想更换座位",
+    "expected_first_handoff": "Seat Booking Agent"
+  },
+  {
+    "id": "greeting",
+    "split": "development",
+    "input": "你好",
+    "expected_first_handoff": null
+  },
+  {
+    "id": "greeting_with_change",
+    "split": "development",
+    "input": "你好，我想换座位",
+    "expected_first_handoff": "Seat Booking Agent"
+  },
+  {
+    "id": "negated_change_wifi",
+    "split": "development",
+    "input": "我不想换座位，只想知道机上 Wi-Fi 怎么连接",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "seat_layout_not_change",
+    "split": "development",
+    "input": "不用换座，我想知道飞机有多少座位",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "seat_availability",
+    "split": "development",
+    "input": "可以帮我看看还有哪些空座位吗？",
+    "expected_first_handoff": "Seat Booking Agent"
+  },
+  {
+    "id": "change_with_number",
+    "split": "development",
+    "input": "确认号 ABC123，帮我换到 5A",
+    "expected_first_handoff": "Seat Booking Agent"
+  },
+  {
+    "id": "unsupported_refund",
+    "split": "development",
+    "input": "我想退票",
+    "expected_first_handoff": null
+  },
+  {
+    "id": "wifi_paraphrase",
+    "split": "holdout",
+    "input": "飞行途中可以上网吗？",
+    "expected_first_handoff": "FAQ Agent"
+  },
+  {
+    "id": "seat_paraphrase",
+    "split": "holdout",
+    "input": "能帮我换个靠窗的位置吗？",
+    "expected_first_handoff": "Seat Booking Agent"
+  },
+  {
+    "id": "greeting_paraphrase",
+    "split": "holdout",
+    "input": "您好",
+    "expected_first_handoff": null
+  },
+  {
+    "id": "unsupported_rebooking",
+    "split": "holdout",
+    "input": "帮我把航班改签到明天",
+    "expected_first_handoff": null
+  },
+  {
+    "id": "unsupported_payment",
+    "split": "holdout",
+    "input": "我要支付机票订单",
+    "expected_first_handoff": null
+  }
+]
